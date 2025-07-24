@@ -166,6 +166,7 @@ struct rkvdec_hevc_priv_tbl {
 struct rkvdec_hevc_ctx {
 	struct rkvdec_aux_buf			priv_tbl;
 	struct v4l2_ctrl_hevc_scaling_matrix	scaling_matrix_cache;
+	struct v4l2_ctrl_hevc_ext_sps_st_rps	st_cache;
 	struct vdpu383_regs_h26x		regs;
 };
 
@@ -644,7 +645,7 @@ static int rkvdec_hevc_run(struct rkvdec_ctx *ctx)
 			&tbl->scaling_list,
 			&hevc_ctx->scaling_matrix_cache);
 	assemble_hw_pps(ctx, &run);
-	rkvdec_hevc_assemble_hw_rps(&run, &tbl->rps);
+	rkvdec_hevc_assemble_hw_rps(&run, &tbl->rps, &hevc_ctx->st_cache);
 
 	config_registers(ctx, &run);
 

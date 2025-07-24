@@ -65,7 +65,8 @@ struct rkvdec_hevc_run {
 	const struct v4l2_ctrl_hevc_sps			*sps;
 	const struct v4l2_ctrl_hevc_pps			*pps;
 	const struct v4l2_ctrl_hevc_scaling_matrix	*scaling_matrix;
-	const struct v4l2_ctrl_hevc_ext_sps_rps		*sps_rps_extended;
+	const struct v4l2_ctrl_hevc_ext_sps_st_rps	*ext_sps_st_rps;
+	const struct v4l2_ctrl_hevc_ext_sps_lt_rps	*ext_sps_lt_rps;
 	int						num_slices;
 };
 
@@ -86,7 +87,8 @@ void compute_tiles_uniform(struct rkvdec_hevc_run *run, u16 log2_min_cb_size,
 void compute_tiles_non_uniform(struct rkvdec_hevc_run *run, u16 log2_min_cb_size,
 			       u16 width, u16 height, s32 pic_in_cts_width,
 			       s32 pic_in_cts_height, u16 *column_width, u16 *row_height);
-void rkvdec_hevc_assemble_hw_rps(struct rkvdec_hevc_run *run, struct rkvdec_rps *rps);
+void rkvdec_hevc_assemble_hw_rps(struct rkvdec_hevc_run *run, struct rkvdec_rps *rps,
+				 struct v4l2_ctrl_hevc_ext_sps_st_rps *st_cache);
 void rkvdec_hevc_assemble_hw_scaling_list(struct rkvdec_dev *rkvdec,
 					  struct rkvdec_hevc_run *run,
 					  struct scaling_factor *scaling_factor,

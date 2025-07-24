@@ -297,7 +297,11 @@ static const struct rkvdec_ctrl_desc rkvdec_hevc_ctrl_descs[] = {
 		.cfg.max = V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1,
 	},
 	{
-		.cfg.id = V4L2_CID_STATELESS_HEVC_EXT_SPS_RPS,
+		.cfg.id = V4L2_CID_STATELESS_HEVC_EXT_SPS_ST_RPS,
+		.cfg.dims = { 65 },
+	},
+	{
+		.cfg.id = V4L2_CID_STATELESS_HEVC_EXT_SPS_LT_RPS,
 		.cfg.dims = { 65 },
 	},
 };
