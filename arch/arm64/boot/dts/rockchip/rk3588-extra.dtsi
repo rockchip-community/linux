@@ -663,3 +663,11 @@
 		      "pll_hdmiphy0",
 		      "pll_hdmiphy1";
 };
+
+&rkisp0 {
+	status = "okay";
+};
+
+&isp0_mmu {
+	status = "okay";
+};
