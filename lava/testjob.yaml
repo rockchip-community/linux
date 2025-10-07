@@ -501,3 +501,27 @@ actions:
           command: "echo mem > /sys/power/state"
           wait_for_prompt: true
 {{ /if }}
+{{ #if job.LAVA_TEST_PM_TEST_SUSPEND_DEEP }}
+  - test:
+      timeout:
+        minutes: 5
+      interactive:
+      - name: pm-test-suspend-deep
+        prompts: ['root@rk3588-ci:(.*)#']
+        script:
+        - name: keep-console-enabled
+          command: "echo N > /sys/module/printk/parameters/console_suspend"
+          wait_for_prompt: true
+        - name: print-pm-times
+          command: "echo 1 > /sys/power/pm_print_times"
+          wait_for_prompt: true
+        - name: print-pm-debug-messages
+          command: "echo 1 > /sys/power/pm_debug_messages"
+          wait_for_prompt: true
+        - name: do-pm-test
+          command: "echo none > /sys/power/pm_test"
+          wait_for_prompt: true
+        - name: suspend-for-120s
+          command: "rtcwake -m mem -s 120"
+          wait_for_prompt: true
+{{ /if }}

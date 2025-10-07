@@ -297,3 +297,7 @@ lava power management test:
         LAVA_TEST: pm-test-suspend
         DEVTYPE:
         - rk3576-rock-4d
+      - LAVA_TEST_PM_TEST_SUSPEND_DEEP: 1
+        LAVA_TEST: pm-test-suspend-deep
+        DEVTYPE:
+        - rk3576-rock-4d
