@@ -13,7 +13,7 @@ config VIDEO_ROCKCHIP_ISP30
 	default n
 	help
 	  Enable this to support the Image Signal Processing (ISP) module
-	  present in RK3399 SoCs.
+	  present in RK3588 SoCs.
 
 	  To compile this driver as a module, choose M here: the module
-	  will be called rockchip-isp1.
+	  will be called rockchip-isp30.
