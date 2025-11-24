@@ -68,6 +68,9 @@
 #define PME_TURN_OFF			FIELD_PREP_WM16(BIT(4), 1)
 #define PME_TO_ACK			FIELD_PREP_WM16(BIT(9), 1)
 
+/* General Debug Register */
+#define PCIE_CLIENT_GENERAL_DEBUG	0x104
+
 /* Hot Reset Control Register */
 #define PCIE_CLIENT_HOT_RESET_CTRL	0x180
 #define  PCIE_LTSSM_APP_DLY2_EN		BIT(1)
@@ -791,6 +794,12 @@ disable_regulator:
 	return ret;
 }
 
+
+static inline void rockchip_pcie_link_status_clear(struct rockchip_pcie *rockchip)
+{
+	rockchip_pcie_writel_apb(rockchip, PCIE_CLIENT_GENERAL_DEBUG, 0x0);
+}
+
 static int rockchip_pcie_suspend(struct device *dev)
 {
 	struct rockchip_pcie *rockchip = dev_get_drvdata(dev);
@@ -803,6 +812,11 @@ static int rockchip_pcie_suspend(struct device *dev)
 	}
 
 	rockchip->intx = rockchip_pcie_readl_apb(rockchip, PCIE_CLIENT_INTR_MASK_LEGACY);
+
+	/* All sub-devices are in D3hot by PCIe stack */
+	dw_pcie_dbi_ro_wr_dis(pci);
+
+	rockchip_pcie_link_status_clear(rockchip);
 
 	ret = dw_pcie_suspend_noirq(pci);
 	if (ret)
