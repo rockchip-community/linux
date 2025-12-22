@@ -300,6 +300,8 @@ actions:
               cacheinfo: Unable to detect cache hierarchy for CPU 0|
               ufshcd-rockchip 2a2d0000.ufshc: .*|
               host_regs: 000000[0-9]0: .*|
+              rockchip-i2s-tdm .*: using zero-initialized flat cache, this may cause unexpected behavior|
+              rockchip-sai .*: using zero-initialized flat cache, this may cause unexpected behavior|
               DUMMY_TERMINATOR_ENTRY
       timeout:
         minutes: 10
