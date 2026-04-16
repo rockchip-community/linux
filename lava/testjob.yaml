@@ -276,6 +276,7 @@ actions:
               platform .*pcie: deferred probe pending: rockchip-dw-pcie: missing PHY|
               platform .*usb: deferred probe pending: dwc3: failed to initialize core|
               platform sdio-pwrseq: deferred probe pending: pwrseq_simple: external clock not ready|
+              platform 2a320000.mmc: deferred probe pending: platform: supplier sdio-pwrseq not ready|
               platform regulatory.0: Direct firmware load for regulatory.db failed with error -2|
               faux_driver regulatory: Direct firmware load for regulatory.db failed with error -2|
               r8169 0004:41:00.0: Unable to load firmware rtl_nic/rtl8125b-2.fw \(-2\)|
@@ -302,6 +303,8 @@ actions:
               host_regs: 000000[0-9]0: .*|
               rockchip-i2s-tdm .*: using zero-initialized flat cache, this may cause unexpected behavior|
               rockchip-sai .*: using zero-initialized flat cache, this may cause unexpected behavior|
+              brcmfmac .*: Direct firmware load for brcm/brcmfmac43752-sdio.*.bin failed with error -2|
+              brcmfmac: brcmf_sdio_htclk: HT Avail timeout \(1000000\): clkctl 0x50|
               DUMMY_TERMINATOR_ENTRY
       timeout:
         minutes: 10
