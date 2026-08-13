@@ -30,6 +30,16 @@ static void dwc3_rockchip_set_suspended(struct dwc3_rockchip *dwc_rk, bool suspe
 	dwc_rk->pm_suspended = suspended;
 }
 
+static void dwc3_rockchip_vbus_handler(struct dwc3 *dwc, bool present)
+{
+	guard(spinlock_irqsave)(&dwc->lock);
+
+	if (!dwc->gadget)
+		return;
+
+	usb_udc_vbus_handler(dwc->gadget, present);
+}
+
 static void dwc3_rockchip_phy_pre_reset(struct dwc3_rockchip *dwc_rk, int port)
 {
 	struct dwc3 *dwc = &dwc_rk->dwc;
@@ -68,6 +78,9 @@ static void dwc3_rockchip_phy_post_reset(struct dwc3_rockchip *dwc_rk, int port)
 			dwc3_writel(dwc, DWC3_GUSB3PIPECTL(port), reg);
 		}
 	}
+
+	if (dwc->dr_mode == USB_DR_MODE_PERIPHERAL)
+		dwc3_rockchip_vbus_handler(dwc, true);
 
 	wake_up(&dwc_rk->phy_reset_wq);
 }
@@ -114,7 +127,13 @@ static int dwc3_rockchip_phy_register_reset_handler(struct dwc3 *dwc)
 					dwc3_rockchip_phy_unregister_reset_handler, dwc_rk);
 }
 
+static void dwc3_rockchip_set_role(struct dwc3 *dwc, enum usb_role role)
+{
+	dwc3_rockchip_vbus_handler(dwc, role == USB_ROLE_DEVICE);
+}
+
 static const struct dwc3_glue_ops dwc3_rockchip_glue_ops = {
+	.pre_set_role = dwc3_rockchip_set_role,
 	.post_phy_registration = dwc3_rockchip_phy_register_reset_handler,
 };
 
