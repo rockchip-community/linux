@@ -3,7 +3,7 @@ device_type: {{job.DEVTYPE}}
 job_name: Hardware enablement {{ job.LAVA_TEST }} test on {{job.DEVTYPE}} {{job.CI_JOB_ID}}
 timeouts:
   job:
-    minutes: 15
+    minutes: 30
   action:
    minutes: 5
 priority: high
@@ -14,11 +14,16 @@ context:
 
 actions:
   - deploy:
+      failure_retry: 3
+      failure_retry_interval: 10
       timeout:
-        minutes: 5
+        minutes: 18
       timeouts:
+        # Allow three five-minute attempts, plus the pauses between them.
+        download-retry:
+          minutes: 16
         http-download:
-          minutes: 5 {{! Workaround for http-download timeout divided by number of retries}}
+          minutes: 5
       to: tftp
       kernel:
         url: "{{job.CI_PROJECT_URL}}/-/jobs/%%KERNEL_BUILD_JOB%%/artifacts/raw/vmlinuz"
