@@ -440,15 +440,29 @@ static void regmap_lock_unlock_none(void *__map)
 
 }
 
+static inline bool regmap_in_atomic_shutdown(void)
+{
+	return system_state > SYSTEM_RUNNING &&
+	       (IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabled());
+}
+
 static void regmap_lock_mutex(void *__map)
 {
 	struct regmap *map = __map;
+
+	if (regmap_in_atomic_shutdown())
+		return;
+
 	mutex_lock(&map->mutex);
 }
 
 static void regmap_unlock_mutex(void *__map)
 {
 	struct regmap *map = __map;
+
+	if (regmap_in_atomic_shutdown())
+		return;
+
 	mutex_unlock(&map->mutex);
 }
 
