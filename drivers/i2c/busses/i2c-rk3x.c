@@ -1096,7 +1096,7 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
 			time_left = wait_event_timeout(i2c->wait, !i2c->busy,
 						       msecs_to_jiffies(WAIT_TIMEOUT));
 		} else {
-			disable_irq(i2c->irq);
+			disable_irq_nosync(i2c->irq);
 			rk3x_i2c_start(i2c);
 
 			time_left = rk3x_i2c_wait_xfer_poll(i2c);
